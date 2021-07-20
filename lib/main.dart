@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {final ThemeData theme = Theme.of(context);
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        textTheme: theme.textTheme.copyWith(
-          headline6: theme.textTheme.headline6!.copyWith(
-            color: Colors.black54,
-          ),
-        ),
-      ),
+      // theme: ThemeData.dark().copyWith(
+      //   textTheme: theme.textTheme.copyWith(
+      //     headline6: theme.textTheme.headline6!.copyWith(
+      //       color: Colors.black54,
+      //     ),
+      //   ),
+      // ),
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id :(context)=>WelcomeScreen(),

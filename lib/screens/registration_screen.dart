@@ -86,10 +86,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     //Implement registration functionality.
                   },
                   minWidth: 200.0,
-                  height: 42.0,
+                  height: 60.0,
                   child: const Text(
                     'Register',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.white,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
               ),
