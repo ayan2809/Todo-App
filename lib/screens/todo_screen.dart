@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:todoapp/constants.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -8,6 +10,33 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  @override
+  void initState()
+  {
+    getCurrentUser();
+    super.initState();
+  }
+  void getCurrentUser() async
+  {
+    try{
+      final user= await _auth.currentUser;
+      if(user!=null)
+      {
+        loggedInUser=user;
+        print(loggedInUser.email);
+      }
+    }
+    catch(e)
+    {
+      print(e);
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +44,19 @@ class _TodoScreenState extends State<TodoScreen> {
         leading: null,
         actions: <Widget>[
           IconButton(
-              icon: const Icon(Icons.close),
+              icon: const Icon(Icons.logout),
               onPressed: () {
+                _auth.signOut();
+                Fluttertoast.showToast(
+                    msg: "We are sorry to see you go!",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                Navigator.pop(context);
                 //Implement logout functionality
               }),
         ],
@@ -59,3 +99,4 @@ class _TodoScreenState extends State<TodoScreen> {
     );
   }
 }
+

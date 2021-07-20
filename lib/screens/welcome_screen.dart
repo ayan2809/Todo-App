@@ -59,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                   tag:'logo',
                   child: SizedBox(
                     child: Image.asset('images/logo.png'),
-                    height: controller.value*120,
+                    height: controller.value*100,
                   ),
                 ),
                 TextLiquidFill(
