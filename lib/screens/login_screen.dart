@@ -139,6 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
                              textColor: Colors.white,
                              fontSize: 16.0
                          );
+                         setState(() {
+                           showSpinner=false;
+                         });
                       }
 
                       //Implement login functionality.

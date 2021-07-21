@@ -70,35 +70,63 @@ class _TodoScreenState extends State<TodoScreen> {
               }),
         ],
         title: const Text('Todo App'),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              decoration: kMessageContainerDecoration,
+              decoration: kMessageContainerDecoration2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      onChanged: (value) {
-                        //Do something with the user input.
-                      },
-                      decoration: kMessageTextFieldDecoration,
-                    ),
+                  const Expanded(
+                      child:MyStatelessWidget(),
                   ),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     //Implement send functionality.
-                  //   },
-                  //   child: const Text(
-                  //     'Send',
-                  //     style: kSendButtonTextStyle,
-                  //   ),
-                  // ),
+                ],
+              ),
+            ),
+            const Divider(
+              height: 20.0,
+            ),
+            Container(
+              decoration: kMessageContainerDecoration2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    child:MyStatelessWidget(),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              height: 20.0,
+            ),
+            Container(
+              decoration: kMessageContainerDecoration2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    child:MyStatelessWidget(),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              height: 20.0,
+            ),
+            Container(
+              decoration: kMessageContainerDecoration2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Expanded(
+                    child:MyStatelessWidget(),
+                  ),
                 ],
               ),
             ),
@@ -152,3 +180,83 @@ class _TodoScreenState extends State<TodoScreen> {
   }
 }
 
+// class MyStatelessWidget extends StatelessWidget {
+//   const MyStatelessWidget({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Card(
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             const ListTile(
+//               leading: Icon(Icons.album),
+//               title: Text('The Enchanted Nightingale'),
+//               subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: <Widget>[
+//                 TextButton(
+//                   child: const Text('BUY TICKETS'),
+//                   onPressed: () {/* ... */},
+//                 ),
+//                 const SizedBox(width: 8),
+//                 TextButton(
+//                   child: const Text('LISTEN'),
+//                   onPressed: () {/* ... */},
+//                 ),
+//                 const SizedBox(width: 8),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class MyStatelessWidget extends StatelessWidget {
+  const MyStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Card(
+        color: Colors.blue.shade50,
+        elevation: 15.0,
+        child: Column(
+          children: <Widget>[
+            InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    print('Card tapped');
+               },
+              child: Column(
+                children: <Widget> [
+                   const SizedBox(
+                      width: 350,
+                      height: 30,
+                      child : Text(
+                          'Title',
+
+                      ),
+                  ),
+                  const SizedBox(
+                    width: 350,
+                    height: 100,
+                    child : const Text(
+                        'Title'
+                    ),
+                  ),
+                ],
+
+              ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

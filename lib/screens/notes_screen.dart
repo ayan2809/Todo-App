@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -12,10 +13,17 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
+  CollectionReference users = FirebaseFirestore.instance.collection(
+      "users");
 
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
   int _counter = 0;
+  final fieldTextTitle = TextEditingController();
+  final fieldTextDescription = TextEditingController();
+  late String noteTitle="";
+  late String noteDescription="";
+
   @override
   void initState()
   {
@@ -44,37 +52,57 @@ class _NotesScreenState extends State<NotesScreen> {
       _counter++;
     });
   }
+  void clearText() {
+    fieldTextTitle.clear();
+    fieldTextDescription.clear();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
        resizeToAvoidBottomInset:false,
         appBar: AppBar(
-          toolbarHeight: 50,
+          toolbarHeight: 60,
           leading: null,
-          // actions: <Widget>[
-          //   // IconButton(
-          //   //     icon: const Icon(Icons.logout),
-          //   //     onPressed: () {
-          //   //       // _auth.signOut();
-          //   //       Fluttertoast.showToast(
-          //   //           msg: "Saving it on the cloud!",
-          //   //           toastLength: Toast.LENGTH_LONG,
-          //   //           gravity: ToastGravity.CENTER,
-          //   //           timeInSecForIosWeb: 1,
-          //   //           backgroundColor: Colors.red,
-          //   //           textColor: Colors.white,
-          //   //           fontSize: 16.0
-          //   //       );
-          //   //       Navigator.pop(context);
-          //   //       //Implement logout functionality
-          //   //     }),
-          // ],
+          actions: <Widget>[
+            IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: () {
+                  // _auth.signOut();
+                  // Fluttertoast.showToast(
+                  //                   //     msg: "Saving it on the cloud!",
+                  //                   //     toastLength: Toast.LENGTH_LONG,
+                  //                   //     gravity: ToastGravity.CENTER,
+                  //                   //     timeInSecForIosWeb: 1,
+                  //                   //     backgroundColor: Colors.red,
+                  //                   //     textColor: Colors.white,
+                  //                   //     fontSize: 16.0
+                  //                   // );
+                  //                   // Navigator.pop(context);
+                  //Implement logout functionality
+                }),
+            IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  // _auth.signOut();
+                  // Fluttertoast.showToast(
+                  //     msg: "Saving it on the cloud!",
+                  //     toastLength: Toast.LENGTH_LONG,
+                  //     gravity: ToastGravity.CENTER,
+                  //     timeInSecForIosWeb: 1,
+                  //     backgroundColor: Colors.red,
+                  //     textColor: Colors.white,
+                  //     fontSize: 16.0
+                  // );
+                  // Navigator.pop(context);
+                  //Implement logout functionality
+                }),
+          ],
           title: const Center(
             child:  Text(
                 'Add your Notes Here!',
             ),
           ),
-          backgroundColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlue,
         ),
         body: SafeArea(
             child: Column(
@@ -82,7 +110,7 @@ class _NotesScreenState extends State<NotesScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  decoration: kMessageContainerDecoration,
+                  decoration: kMessageContainerDecoration2,
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -93,6 +121,8 @@ class _NotesScreenState extends State<NotesScreen> {
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             onChanged: (value) {
+                              //enter the title of the note and store in this field
+                              noteTitle=value;
                               //Do something with the user input.
                             },
                             decoration: const InputDecoration(
@@ -104,6 +134,7 @@ class _NotesScreenState extends State<NotesScreen> {
                               ),
                               hintText: 'Title',
                             ),
+                            controller: fieldTextTitle,
                           ),
                         ),
                         // TextButton(
@@ -120,17 +151,20 @@ class _NotesScreenState extends State<NotesScreen> {
                 ),
                 Container(
                   height: 400,
-                  decoration: kMessageContainerDecoration,
+                  decoration: kMessageContainerDecoration2,
                   child:
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Flexible(
                         child: TextField(
+                          controller: fieldTextDescription,
                           textAlignVertical: TextAlignVertical.top,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           onChanged: (value) {
+                            //enter the description of the note and store in this field
+                            noteDescription=value;
                             //Do something with the user input.
                           },
                           style: const TextStyle(
@@ -176,14 +210,36 @@ class _NotesScreenState extends State<NotesScreen> {
                 child: const Icon(Icons.save),
                 label: "Save!",
                 backgroundColor: Colors.cyanAccent,
-                onTap: () => print("First!")
+                onTap: () async{
+                  await users.add(
+                      {'title': noteTitle, "description": noteDescription})
+                      .then((value) => print('User added'))
+                  .catchError((error) => print("Failed to add user: $error"));
+
+                  Fluttertoast.showToast(
+                      msg: "Note Added !!",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
             ),
             SpeedDialChild(
                 child: const Icon(Icons.clear),
                 label: "Clear!",
                 backgroundColor: Colors.cyanAccent,
-                onTap: () => print("First!")
+                onTap: () => clearText(),
             ),
+            SpeedDialChild(
+              child: const Icon(Icons.delete),
+              label: "Delete!",
+              backgroundColor: Colors.cyanAccent,
+              onTap: () => clearText(),
+            ),
+
           ],
         )
     );

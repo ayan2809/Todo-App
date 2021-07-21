@@ -17,3 +17,18 @@ const kMessageContainerDecoration = BoxDecoration(
     top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
   ),
 );
+
+const kMessageContainerDecoration2 = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.white, width: 0.0),
+  ),
+);
+
+const kMessageContainerDecoration3 = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    left: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    right: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    bottom: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+  ),
+);
