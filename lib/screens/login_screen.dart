@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         {
                           Navigator.pushNamed(context, TodoScreen.id);
                           Fluttertoast.showToast(
-                              msg: "Whalecum to the TODO app",
+                              msg: "Welcome to my TODO app",
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 1,

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/screens/login_screen.dart';
 import 'package:todoapp/screens/notes_screen.dart';
+import 'package:todoapp/screens/notesview_screen.dart';
 import 'package:todoapp/screens/registration_screen.dart';
 import 'package:todoapp/screens/todo_screen.dart';
 import 'package:todoapp/screens/welcome_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         RegistrationScreen.id :(context)=>RegistrationScreen(),
         TodoScreen.id :(context)=>TodoScreen(),
         NotesScreen.id: (context)=>NotesScreen(),
+        NotesViewsScreen.id: (context)=>NotesViewsScreen(),
       },
     );
   }

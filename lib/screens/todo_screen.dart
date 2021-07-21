@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -5,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:todoapp/constants.dart';
 
 import 'notes_screen.dart';
+import 'notesview_screen.dart';
 
 class TodoScreen extends StatefulWidget {
   static String id='todo_screen';
@@ -17,6 +19,8 @@ class _TodoScreenState extends State<TodoScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
   int _counter = 0;
+  final Stream<QuerySnapshot> users=
+      FirebaseFirestore.instance.collection('users').snapshots();
 
   @override
   void initState()
@@ -78,58 +82,68 @@ class _TodoScreenState extends State<TodoScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
+              height:700,
               decoration: kMessageContainerDecoration2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Expanded(
-                      child:MyStatelessWidget(),
-                  ),
-                ],
-              ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: users,
+                builder: (
+                    BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot,
+                ) {
+                  if(snapshot.hasError)
+                    {
+                      return const Text(
+                          'Something went wrong'
+                      );
+                    }
+                  if(snapshot.connectionState == ConnectionState.waiting)
+                    {
+                      return const Text(
+                          'Loading'
+                      );
+                    }
+                  final data = snapshot.requireData;
+                  return ListView.builder(
+                    itemCount: data.size,
+                      itemBuilder:(context, index)
+                      {
+                        return MyStatelessWidget(title: data.docs[index]['title'],description: data.docs[index]['description']);
+                        //   Text(
+                        //   'The title is ${data.docs[index]['title']} and ${data.docs[index]['description']} '
+                        // );
+                      }
+                  );
+                },
+              )
             ),
-            const Divider(
-              height: 20.0,
-            ),
-            Container(
-              decoration: kMessageContainerDecoration2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Expanded(
-                    child:MyStatelessWidget(),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              height: 20.0,
-            ),
-            Container(
-              decoration: kMessageContainerDecoration2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Expanded(
-                    child:MyStatelessWidget(),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              height: 20.0,
-            ),
-            Container(
-              decoration: kMessageContainerDecoration2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Expanded(
-                    child:MyStatelessWidget(),
-                  ),
-                ],
-              ),
-            ),
+            // const Divider(
+            //   height: 20.0,
+            // ),
+            // Container(
+            //   decoration: kMessageContainerDecoration2,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: <Widget>[
+            //       const Expanded(
+            //         child:MyStatelessWidget(),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const Divider(
+            //   height: 20.0,
+            // ),
+            // Container(
+            //   decoration: kMessageContainerDecoration2,
+            //   child: Row(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: <Widget>[
+            //       const Expanded(
+            //         child:MyStatelessWidget(),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -218,10 +232,15 @@ class _TodoScreenState extends State<TodoScreen> {
 // }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  //const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({required this.title, required this.description});
 
+  final String title;
+  final String description;
   @override
   Widget build(BuildContext context) {
+
+
     return Center(
       child: Card(
         color: Colors.blue.shade50,
@@ -231,23 +250,32 @@ class MyStatelessWidget extends StatelessWidget {
             InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped');
+                    Navigator.pushNamed(context, NotesViewsScreen.id);
+                    //print('Card tapped');
                },
               child: Column(
                 children: <Widget> [
-                   const SizedBox(
+                   SizedBox(
                       width: 350,
-                      height: 30,
+                      height: 26,
                       child : Text(
-                          'Title',
+                        //TextAlign.end,
+                          title,
+                        style: const TextStyle(
+                            fontSize: 22.0
+                        ),
 
                       ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 350,
-                    height: 100,
-                    child : const Text(
-                        'Title'
+                    height: 70,
+                    child : Text(
+                      description,
+                      style: const TextStyle(
+                        fontSize: 18.0
+
+                      ),
                     ),
                   ),
                 ],
